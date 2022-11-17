@@ -1,0 +1,86 @@
+SPINNER ,ALERT,INTENT
+---------------------------------------
+MAIN ACTIVITY
+---------------------
+
+package com.example.spinner3;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements
+        AdapterView.OnItemSelectedListener {
+        String[] country = { " ","India", "USA", "China", "Japan", "Other"};
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Spinner sp = (Spinner) findViewById(R.id.spinner);
+        sp.setOnItemSelectedListener(this);
+
+
+        ArrayAdapter<String> data = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, country);
+        data.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp.setAdapter(data);
+    }
+    @Override
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+        Toast.makeText(getApplicationContext(),country[position] , Toast.LENGTH_SHORT).show();
+        Intent i=new Intent(MainActivity.this,MainActivity2.class);
+        if(country[position]!=" ") {
+            i.putExtra("num", country[position]);
+            startActivity(i);
+        }
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+    }
+}
+
+-----------------------------------------------------------------------------
+MAIN ACTIVITY2
+----------------------------------------------
+
+package com.example.spinner3;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.widget.TextView;
+
+import java.net.URI;
+
+public class MainActivity2 extends AppCompatActivity {
+    private TextView t1;
+    AlertDialog.Builder builder;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+        t1=(TextView) findViewById(R.id.textView1);
+        Bundle b=getIntent().getExtras();
+        String n=b.getString("num");
+        t1.setText(n);
+        builder = new AlertDialog.Builder(this);
+        AlertDialog alert = builder.create();
+
+        //Setting the title manually
+        alert.setTitle("hello.....");
+        alert.show();
+    }
+}
+
